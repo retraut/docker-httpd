@@ -1,0 +1,16 @@
+---
+services:
+  - docker
+
+before_install:
+  - docker build -t retraut/docker-httpd:latest
+
+   
+install:
+  - docker run -d -p 127.0.0.1:80:80 --name web retraut/docker-httpd:latest
+
+script:
+  - docker ps | grep -q web
+  - docker exec web composer -V
+  - docker exec web stat /var/www
+  - ss -antps | grep 127.0.0.1:80 | grep LISTEN
