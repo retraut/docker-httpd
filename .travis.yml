@@ -8,7 +8,7 @@ script:
 - docker ps | grep -q web
 - docker exec web composer -V
 - docker exec web stat /var/www
-- ss -l | grep 127.0.0.1:80 
+- ss -ln | grep 127.0.0.1:80 
 env:
   global:
     DOCKER_EMAIL:
