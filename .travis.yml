@@ -7,25 +7,5 @@ install:
 script:
 - docker ps | grep -q web
 - docker exec web composer -V
-- docker exec web stat /var/www
+- docker exec web stat /var/www/html
 - ss -ln | grep 127.0.0.1:80 
-env:
-  global:
-    DOCKER_EMAIL:
-      secure: II1IXgQGjlPxxu0Uubr1yy07POms4PSEhIgtsIXuF0yvEA2byB3//8scKBGCZqPUl6sIN+TTVwhzKygExk8ck2CSGCsEM4hylkHxOUrkAbwSfdSVXztLXDgKc1C6UkZ5pUEI7F+ToOemSpkwO6uhHhZZE8D+HT/Q/i8RLJQhtrFn0idbLhRL4y9gHlt5iJ37Q5rzm4/O7ix1NFFZdlT3bTwUZGQJUjWEiSODtO1U80oKJsCbs5vWu9XTbuL+RY5FHahuT++5JOLZxam3SnN0HIBh0hff0YDTYMxyo1P+7zgTofJG4nO9tO2gAygzTEdHRWD/rnd3vbFLVQK7wZxk1N1naDu9TskKXeTy8SgGNyFygahzpf+6BHZlriqZP8rG7E+lWXxyF5gYkmkmP7V0vGNccC+pAcLDGcv/n8RFmW1gZJK7f+9/SNOFwHvUZ0cijlmD7fh3alOEmxWYKiZQ6KOEmu0PcDj6XTpI8RYpLWW4dPDSM4VC7QuHfV39RiQ6fBUwm9vj+DQOMePmHpUaOzGtCmITMez0qY3u4Bd6OSO6k9yhUnCWVSuxlN74KpKXGXacQnehCLeMUKH6wdHCD3AtKwklPl/RtlbaNeec3dExiWPjdyXE/3wuitmT4+kXMsOrGuP4A8uVm6elc/kFTuGVZpfSmM4aplHFtf+K5G4=
-    DOCKER_USER:
-      secure: X0FJf2pa4SYbr/2Z1AFbnvXbHI+C8QoOTcxP+hmUXy2eLB6EVUMi1ngYkcBs2siXnJDFb9qCP6K2DL3Jny6xYRLgBDeb65s50o4ZFW08eNLPK5BGdMk3OIzxwPST1WNhcmJe+eUZKcXDwdxUOlkj26nzyUcddGgJ0/x7CWIhJDer7m8Z2dfQQCvEP0fRS2C7kUlSRng5YHF2wSBII2mhkwV7iSMMFns7Dp+ExMq9mzG33FsNHFdyHo4aydXQnJAdop41J7nr/MuatiGnvlDpixpoHTNxrkwo5EHSFDUNn5lZRku5YCCZWbMDDb+fMX7PetGoDu6QppvMabUGXO1E3OnG8cuPTUH9KLzUR2BoG+xiV5jCAbUDjmJaus4gm0nZWprZJkRRoYxobgLsmgPqfg8oGqKY1k5GX+kgIf0+Y3GPODNTFwUKkyk9779w5J9CfZkYudNa1U1O/9pTPf9qURntG3d6SfAUk7e3Xm1KMrPvxxTEwf1x9cspSHom0i77YkQxENk+PLImsmXpM+VMqqam5+31Uxx6+jbld5GUqN068Pa0+q8b3sHrpXybx6wD8Rx8gIor2LRGGZoyh8Sly2HCN9uSFh9m3O8grFbOyaR0G+FzzQ2x8oJ59SCtp7G82zDli39p6iSB5brRaUekRkscwmKPMvi3TEfPy9ZRfnw=
-    DOCKER_PASS:
-      secure: reyJ4jFg4iB6JsefPpwFBQxfgdMR2m7c5bQp5NAdtgZwlOvh8hIqLZjNCHbD5CZXhaWO33FvS0EtjsExVJewdXQdXini2lV6aUBfA5CihzIjHREYt2EGOQGac8Jlywc/RdmX+1ykgJJEDlWFB1sfSzuf14fhfxPxkaVjR9N11Ws8c+um5tBVHT6MLCrOJ1WgEucVNRiCwjX8Uh11VLFrGOTo2Yurk+36XExBaFAAsQ1xBmFqbzcY0Y2BcJZsYXdhqwJAxqK/Ma6TnN/GtFlCDE6e1Fy/pZYnXrCFzRKSttXLCoFfgY7xriLmMhEDeDKpbZHS71BQbpjKvFRSoFGSur5xLTERJzODnEFtVFyt+crlmWqrV4c0aFQzdU1c+2BTQWxGv+5k6aVfsARgRbHApyFr7CgiQAh2GcmXybSfm9Zx1Ieeok4Dd9B6/puVHRSs5oamhrHVbTiNqMFU+agqCWINuQN8L29/9YCZeGFmQlyFtNVp2d8RtxZe1L51RqLBYLhr4dB//JxrzboEAlsIAhM7igU4nLmrVQNu5VV9VqHQ4fu2IqwpFWhYBCPZTaYRoS2ameIrDYi5L24ZhUZQgxjMmNxy3cCniQ9IjVeizZ5mXN3sBqwIeOXKWQBI2lVe/ZTZKevqO19IJINR24PoBHATnck+atRA4vqS9FsAVAw=
-
-global:
-     - COMMIT=${TRAVIS_COMMIT::6}
-after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=$DOCKER_USER/docker-httpd
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - echo $REPO:$TAG:$COMMIT
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
