@@ -8,7 +8,7 @@ script:
 - docker ps | grep -q web
 - docker exec web composer -V
 - docker exec web stat /var/www
-- ss -antps | grep 127.0.0.1:80 | grep -q LISTEN
+- ss -l | grep 127.0.0.1:80 
 env:
   global:
     DOCKER_EMAIL:
@@ -29,4 +29,3 @@ after_success:
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
-
