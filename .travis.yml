@@ -2,8 +2,10 @@ services:
 - docker
 before_install:
 - docker build -t docker-httpd .
+- docker build -t docker-httpd:goss ./tests/.
+
 install:
-- docker run -d -p 127.0.0.1:80:80 --name web docker-httpd
+- docker run -d -p 127.0.0.1:80:80 --name web docker-httpd:goss
 script:
 - docker ps | grep -q web
 - ./tests/goss.sh
